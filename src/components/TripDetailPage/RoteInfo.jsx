@@ -201,8 +201,10 @@ const Modal = ({ setIsModal, onSourceChange, currentSource, setActiveTab }) => {
   const searchInputRef = useRef(null);
   const [pickupAddress, setPickupAddress] = useState(currentSource || "");
   const [pickupDate, setPickupDate] = useState("");
-  const { isLoaded } = useGoogleMapsApi();
-
+  const { isLoaded, loadError } = useGoogleMapsApi({
+    libraries: ["places"],
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+  });
   const handlePlaceSelect = (address) => {
     setPickupAddress(address);
   };

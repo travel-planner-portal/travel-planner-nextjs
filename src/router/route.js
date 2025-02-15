@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
         element: <DateSelectionPage />,
       },
       {
-        path: "discover/interests",
+        path: "/interests",
         element: <InterestsPage />,
       },
       {

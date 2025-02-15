@@ -1,5 +1,5 @@
 // hooks/useTripPreferences.js
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTripPreferences } from "../network/networkCalls";
 import toast from "react-hot-toast";
@@ -10,19 +10,13 @@ import {
 
 export const useTripPreferences = () => {
   const dispatch = useDispatch();
-  // Get the raw cache data from Redux
-  const tripPreferencesCache = useSelector((state) => {
-    const pageURLState = state.pageURL;
+  const isMounted = useRef(false);
 
-    // Check if tripPreferencesCache exists and has data
-    if (pageURLState?.tripPreferencesCache?.data) {
-      return pageURLState.tripPreferencesCache;
-    }
-    return null;
-  });
-
-  const initialFetchDoneInterest = useSelector(
-    (state) => state.userData?.initialFetchDoneInterest || false
+  const cachedPreferences = useSelector(
+    (state) => state.pageURL?.tripPreferencesCache
+  );
+  const initialFetchDone = useSelector(
+    (state) => state.userData?.initialFetchDoneInterest
   );
 
   const [preferences, setPreferences] = useState({
@@ -33,27 +27,31 @@ export const useTripPreferences = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const isValidPreferenceData = (data) => {
-    return (
+  const isValidPreferenceData = useCallback((data) => {
+    return Boolean(
       data &&
-      Array.isArray(data.tripTypes) &&
-      data.exploreTypes &&
-      Array.isArray(data.exploreTypes.main)
+        Array.isArray(data.tripTypes) &&
+        data.tripTypes.length > 0 &&
+        data.exploreTypes?.main &&
+        Array.isArray(data.exploreTypes.main) &&
+        data.exploreTypes.main.length > 0
     );
-  };
+  }, []);
 
-  const fetchPreferences = async () => {
+  const fetchPreferences = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // Check if we have valid cached data
+      // Check if we have valid cached data and it's not too old (e.g., less than 1 hour old)
       if (
-        tripPreferencesCache &&
-        isValidPreferenceData(tripPreferencesCache.data)
+        cachedPreferences?.data &&
+        isValidPreferenceData(cachedPreferences.data) &&
+        cachedPreferences.timestamp &&
+        Date.now() - cachedPreferences.timestamp < 3600000 // 1 hour
       ) {
         console.log("Using cached preferences data");
-        setPreferences(tripPreferencesCache.data);
+        setPreferences(cachedPreferences.data);
         dispatch(setInitialFetchDoneInterestPage(true));
         setLoading(false);
         return;
@@ -63,57 +61,56 @@ export const useTripPreferences = () => {
       const response = await getTripPreferences();
 
       if (response.success && isValidPreferenceData(response.data)) {
-        dispatch(
-          cacheTripPreferences({
-            data: response.data,
-            timestamp: Date.now(),
-          })
-        );
+        dispatch(cacheTripPreferences({ data: response.data }));
         setPreferences(response.data);
         dispatch(setInitialFetchDoneInterestPage(true));
       } else {
-        throw new Error("Invalid or missing preference data");
+        throw new Error("Invalid preference data");
       }
     } catch (error) {
-      console.error("Error in fetchPreferences:", error);
+      console.error("Error fetching preferences:", error);
       setError(error.message);
-      toast.error("Failed to load preferences");
 
-      // Fallback to cache if available
       if (
-        tripPreferencesCache &&
-        isValidPreferenceData(tripPreferencesCache.data)
+        cachedPreferences?.data &&
+        isValidPreferenceData(cachedPreferences.data)
       ) {
-        setPreferences(tripPreferencesCache.data);
+        setPreferences(cachedPreferences.data);
         setError(null);
+      } else {
+        toast.error("Failed to load preferences");
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, [dispatch, isValidPreferenceData, cachedPreferences]);
 
   useEffect(() => {
-    // Skip API call if we have valid cached data and initialFetchDoneInterest is true
-    if (
-      tripPreferencesCache &&
-      isValidPreferenceData(tripPreferencesCache.data) &&
-      initialFetchDoneInterest
-    ) {
-      console.log("Using cached data from useEffect");
-      setPreferences(tripPreferencesCache.data);
-      setLoading(false);
-      return;
+    if (!isMounted.current) {
+      isMounted.current = true;
+
+      if (
+        initialFetchDone &&
+        cachedPreferences?.data &&
+        isValidPreferenceData(cachedPreferences.data)
+      ) {
+        console.log("Using cached data from mount");
+        setPreferences(cachedPreferences.data);
+        setLoading(false);
+      } else {
+        fetchPreferences();
+      }
     }
 
-    // Fetch data if no valid cache or initialFetchDoneInterest is false
-    console.log("Fetching new data from useEffect");
-    fetchPreferences();
-  }, []); // Empty dependency array since we only want this to run once
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
-  const refetch = () => {
+  const refetch = useCallback(() => {
     dispatch(setInitialFetchDoneInterestPage(false));
     fetchPreferences();
-  };
+  }, [dispatch, fetchPreferences]);
 
   return {
     preferences,

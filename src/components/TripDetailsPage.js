@@ -354,7 +354,7 @@ const TripDetailsPage = ({ initialDestination, initialDuration }) => {
   }
 
   return (
-    <div className="container max-w-[88rem] mx-auto px-4  mt-[73px]  md:mt-[92px] ">
+    <div className="container max-w-[88rem] mx-auto mt-[73px] md:mt-[92px]">
       {finalDestination && <ImageGallery placeName={finalDestination} />}
       <Header
         itineraryData={itineraryData}
@@ -390,6 +390,8 @@ const TripDetailsPage = ({ initialDestination, initialDuration }) => {
             expandedDay={expandedDay}
             setExpandedDay={setExpandedDay}
             totalDays={finalDuration}
+            onLoadMore={loadMore}
+            isLoading={loading}
           />
           {hasMore && (
             <div className="text-center mt-6 mb-4">

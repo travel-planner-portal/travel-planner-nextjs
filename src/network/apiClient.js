@@ -2,11 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const apiClient = axios.create({
-  baseURL: "https://travelgo-537037621947.us-central1.run.app/api",
-  // baseURL:
-  //   process.env.NODE_ENV === "production"
-  //     ? "https://travelgo-537037621947.us-central1.run.app/api"
-  //     : "http://localhost:5000/api",
+  baseURL: "https://travelgo-backend-141065095049.us-central1.run.app/api",
   timeout: 120000,
   withCredentials: false,
 });

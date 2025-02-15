@@ -222,7 +222,7 @@ const Navbar = () => {
   const userInitial = displayName[0]?.toUpperCase() || "U";
   return (
     <>
-      <nav className="z-[1] fixed top-0 w-full bg-white px-4 py-4">
+      <nav className="z-[1] fixed top-0 w-full bg-red px-4 py-4">
         <div className="container max-w-[88rem] md:px-4  mx-auto flex flex-row items-center justify-between">
           <Link
             href={"/"}
@@ -231,7 +231,7 @@ const Navbar = () => {
             <Image
               src={logo}
               alt="FindTrip"
-              className="w-[50px] h-[50px] object-contain"
+              className="w-[30px] h-[30px] sm:w-[40px] sm:h-[40px] md:w-[50px] md:h-[50px] lg:w-[60px] lg:h-[60px] object-contain"
             />
           </Link>
 

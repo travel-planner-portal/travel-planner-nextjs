@@ -32,12 +32,10 @@ const Header = ({
 
   const finaldestination = destinationfromprops || destination;
   const finalduration = durationfromprops || duration;
-  console.log("isAuthenticated", isAuthenticated);
 
   const handleAuthCheck = () => {
-    console.log("isAuthenticated", isAuthenticated);
     if (!isAuthenticated) {
-      toast.error("Please login to download"); // Add this line
+      toast.error("Please login to download");
       setIsLogin(true);
       setIsWapper(true);
       return false;
@@ -56,6 +54,7 @@ const Header = ({
       console.error("Error checking saved status:", error);
     }
   };
+
   useEffect(() => {
     if (isAuthenticated) {
       checkSavedStatus();
@@ -94,7 +93,6 @@ const Header = ({
   };
 
   const handleDownload = async () => {
-    console.log("handleDownload");
     if (!handleAuthCheck() || !itineraryData || !routeData || downloading)
       return;
 
@@ -141,15 +139,28 @@ const Header = ({
     }
   };
 
+  const destinationName = finaldestination.replace(/\d+\s*days?/, "").trim();
+
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between items-start gap-4 md:items-center border-b pb-6 border-[#BCBCBC] border-dotted">
         <div className="flex items-bottom md:items-center gap-2">
           <div className="w-[36px] h-[36px]">
-            <MapPin width="100%" height="100%" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={40}
+              height={40}
+              viewBox={`0 0 43 43`}
+              fill="none"
+            >
+              <path
+                d="M21.4987 20.6043C20.3108 20.6043 19.1715 20.1324 18.3314 19.2924C17.4914 18.4524 17.0195 17.3131 17.0195 16.1252C17.0195 14.9372 17.4914 13.7979 18.3314 12.9579C19.1715 12.1179 20.3108 11.646 21.4987 11.646C22.6866 11.646 23.8259 12.1179 24.6659 12.9579C25.506 13.7979 25.9779 14.9372 25.9779 16.1252C25.9779 16.7134 25.862 17.2958 25.6369 17.8393C25.4118 18.3827 25.0819 18.8765 24.6659 19.2924C24.25 19.7083 23.7562 20.0383 23.2128 20.2634C22.6694 20.4885 22.0869 20.6043 21.4987 20.6043ZM21.4987 3.5835C18.1724 3.5835 14.9824 4.90485 12.6304 7.25687C10.2784 9.60888 8.95703 12.7989 8.95703 16.1252C8.95703 25.5314 21.4987 39.4168 21.4987 39.4168C21.4987 39.4168 34.0404 25.5314 34.0404 16.1252C34.0404 12.7989 32.719 9.60888 30.367 7.25687C28.015 4.90485 24.825 3.5835 21.4987 3.5835Z"
+                className="fill-black "
+              />
+            </svg>
           </div>
-          <h1 className="text-darkBlack font-rubikmedium_500 leading-[32px] tracking-[-1.14px] capitalize text-[24px] md:text-[36px] d-flex flex-warp">
-            <span>{finaldestination}</span>
+          <h1 className="text-darkBlack font-rubikmedium_500 leading-[32px] tracking-[-1.14px] capitalize text-[24px] md:text-[36px] d-flex flex-wrap">
+            <span>{destinationName}</span>
             <span> ({finalduration} days)</span>
           </h1>
         </div>
@@ -177,14 +188,7 @@ const Header = ({
 };
 
 const ActionButtons = ({ ...props }) => {
-  const { setIsLogin, setIsWapper } = useNavigationContext(); // Get context values directly
-
-  const handleLoginToDownload = (e) => {
-    e.preventDefault(); // Add this to prevent default button behavior
-    toast.error("Please login to download");
-    setIsLogin(true); // Set both states to true
-    setIsWapper(true);
-  };
+  const { setIsLogin, setIsWapper } = useNavigationContext();
 
   const handleAuthClick = (e, action) => {
     e.preventDefault();
@@ -219,7 +223,7 @@ const ActionButtons = ({ ...props }) => {
           {props.downloading
             ? "Downloading..."
             : !props.isAuthenticated
-            ? "Login to Download"
+            ? "Download"
             : "Download"}
         </span>
       </button>
@@ -238,7 +242,7 @@ const ActionButtons = ({ ...props }) => {
           {props.saving
             ? "Saving..."
             : !props.isAuthenticated
-            ? "Login to Save"
+            ? "Save"
             : props.isSaved
             ? "Remove"
             : "Save"}

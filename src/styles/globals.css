@@ -298,3 +298,120 @@ html {
 .back-to-gallery:hover {
   background: #0056b3;
 }
+
+/* Your custom styles can go here */
+@font-face {
+  font-family: Rubik-Light;
+  src: local("Rubik-Light"),
+    url("../assets/font/Rubik/Rubik-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rubik-LightItalic;
+  src: local("Rubik-LightItalic"),
+    url("../assets/font/Rubik/Rubik-LightItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rubik-Regular;
+  src: local("Rubik-Regular"),
+    url("../assets/font/Rubik/Rubik-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: Rubik-Italic;
+  src: local("Rubik-Italic"),
+    url("../assets/font/Rubik/Rubik-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rubik-Medium;
+  src: local("Rubik-Medium"),
+    url("../assets/font/Rubik/Rubik-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rubik-MediumItalic;
+  src: local("Rubik-MediumItalic"),
+    url("../assets/font/Rubik/Rubik-MediumItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rubik-SemiBold;
+  src: local("Rubik-SemiBold"),
+    url("../assets/font/Rubik/Rubik-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rubik-SemiBoldItalic;
+  src: local("Rubik-SemiBoldItalic"),
+    url("../assets/font/Rubik/Rubik-SemiBoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rubik-Bold;
+  src: local("Rubik-Bold"),
+    url("../assets/font/Rubik/Rubik-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: Rubik-BoldItalic;
+  src: local("Rubik-BoldItalic"),
+    url("../assets/font/Rubik/Rubik-BoldItalic.ttf") format("truetype");
+}
+@font-face {
+  font-family: Rubik-ExtraBold;
+  src: local("Rubik-ExtraBold"),
+    url("../assets/font/Rubik/Rubik-ExtraBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Rubik-ExtraBoldItalic;
+  src: local("Rubik-ExtraBoldItalic"),
+    url("../assets/font/Rubik/Rubik-ExtraBoldItalic.ttf") format("truetype");
+}
+@font-face {
+  font-family: Rubik-Black;
+  src: local("Rubik-Black"),
+    url("../assets/font/Rubik/Rubik-Black.ttf") format("truetype");
+}
+@font-face {
+  font-family: Rubik-BlackItalic;
+  src: local("Rubik-BlackItalic"),
+    url("../assets/font/Rubik/Rubik-BlackItalic.ttf") format("truetype");
+}
+
+@keyframes globe-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes particle-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-40px) rotate(180deg);
+  }
+}
+@keyframes orb-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+@keyframes texture {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}

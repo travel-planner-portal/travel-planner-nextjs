@@ -56,15 +56,23 @@ const otherReducer = (state = initialState, action) => {
         ...state,
         tripSuggestionsCache: action.payload,
       };
-    case CACHE_INTERESTS:
+    // case CACHE_INTERESTS:
+    //   return {
+    //     ...state,
+    //     interestsCache: action.payload,
+    //   };
+    case "CACHE_TRIP_PREFERENCES":
+      return {
+        ...state,
+        tripPreferencesCache: {
+          data: action.payload.data,
+          timestamp: Date.now(),
+        },
+      };
+    case "CACHE_INTERESTS":
       return {
         ...state,
         interestsCache: action.payload,
-      };
-    case CACHE_TRIP_PREFERENCES:
-      return {
-        ...state,
-        tripPreferencesCache: action.payload,
       };
     case CACHE_MAIN_TRIP_DATA:
       return {

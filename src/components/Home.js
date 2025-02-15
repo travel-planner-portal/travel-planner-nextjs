@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 
 const componentMap = {
   "/": Hero,
-  "/discover/interests": InterestsPage,
+  "/interests": InterestsPage,
   "/discover/dates": DateSelectionPage,
   "/discover": BudgetPlanner,
   "/discover/trips": TripsPage,

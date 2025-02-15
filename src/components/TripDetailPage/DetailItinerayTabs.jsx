@@ -14,6 +14,8 @@ const DetailItinerayTabs = ({
   setExpandedDay,
   expandedDay,
   totalDays,
+  onLoadMore,
+  isLoading,
 }) => {
   const [showVideos, setShowVideos] = useState(false);
 
@@ -24,6 +26,15 @@ const DetailItinerayTabs = ({
   const allDays = Array.from({ length: totalDays }, (_, i) => i + 1);
   const loadedDays = trip.days.map((day) => day.day);
 
+  const handleDayClick = (dayNum) => {
+    console.log("handleDayClick", dayNum);
+    if (!loadedDays.includes(dayNum)) {
+      onLoadMore?.();
+    } else {
+      setExpandedDay(dayNum);
+    }
+  };
+
   return (
     <>
       <div className="mt-[32px] pb-[18px]  border-b border-solid border-[#BCBCBC] overflow-x-auto scrollbar-hide  flex w-full flex-row items-center justify-between">
@@ -32,10 +43,10 @@ const DetailItinerayTabs = ({
             const isLoaded = loadedDays.includes(dayNum);
             return (
               <button
-                onClick={() => isLoaded && setExpandedDay(dayNum)}
+                onClick={() => !isLoading && handleDayClick(dayNum)}
                 key={dayNum}
-                disabled={!isLoaded}
-                className={`px-3 py-[6px] border border-solid ${
+                disabled={isLoading}
+                className={`px-3 py-[6px]  cursor-pointer border border-solid ${
                   dayNum === 1 ? "rounded-l-full" : ""
                 } ${dayNum === totalDays ? "rounded-r-full" : ""}
               ${
@@ -107,14 +118,18 @@ const DaySectionAccordian = ({
       className="w-full flex items-center justify-between pt-[33px] pb-4"
     >
       <div className="flex flex-row items-start  justify-start gap-2">
-        <div className={`scale-50 ${isExpanded ? "-rotate-90" : "rotate-90"} pt-[2px] md:pt-2`}>
+        <div
+          className={`scale-50 ${
+            isExpanded ? "-rotate-90" : "rotate-90"
+          } pt-[2px] md:pt-2`}
+        >
           <LeftAngleArrowIcon />
         </div>
         <div className="flex flex-row items-start justify-start gap-4">
           <span className="text-[16px] leading-[21px] md:text-[20px] font-rubikregular_400 md:leading-[26px] tracking-[-0.8px] text-[#818181] whitespace-nowrap">
             Day {day}
           </span>
-          <h3 className="md:text-[20px] text-[16px] leading-[20px] md:leading-[26px] font-rubikmedium_500 tracking-[0.4px] text-lightBlack text-left" >
+          <h3 className="md:text-[20px] text-[16px] leading-[20px] md:leading-[26px] font-rubikmedium_500 tracking-[0.4px] text-lightBlack text-left">
             {title}
           </h3>
         </div>
@@ -166,7 +181,7 @@ const ActivityCard = ({ name, location, time, image, details }) => {
               <div className="scale-75 md:scale-100 flex flex-col items-center justify-center">
                 <SmallMapPin />
               </div>
-              
+
               <h3 className="text-darkBlack font-rubikregular_400 text-[16px] md:text-[20px] leading-[20px] md:leading-[26px]">
                 {name}
               </h3>
@@ -269,7 +284,6 @@ const ActivityCard = ({ name, location, time, image, details }) => {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    
                   >
                     <path
                       strokeLinecap="round"

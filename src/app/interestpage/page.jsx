@@ -1,3 +1,4 @@
+// app/interestpage/page.jsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -63,7 +64,6 @@ const page = ({ inputData }) => {
         interest: interests,
       })
     );
-
     if (currentState?.path === "Destination") {
       router.push("/dates");
     } else {
@@ -264,7 +264,7 @@ const page = ({ inputData }) => {
     })) || [];
 
   return (
-    <div className="container background-image-homepage flex flex-col items-center max-w-[88rem] md:w-[80%] mx-auto px-4 md:px-6 pb-6 pt-[9px] md:pt-[28px]">
+    <div className="container flex flex-col items-center max-w-[88rem] md:w-[80%] mx-auto px-4 md:px-6 pb-6 pt-[9px] md:pt-[28px]">
       <button
         onClick={onBack}
         className="mb-6 md:mb-8 mt-16 flex items-center justify-start self-start gap-2 md:gap-5 text-gray-600 hover:text-gray-900"

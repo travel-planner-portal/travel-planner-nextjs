@@ -255,7 +255,7 @@ const DestinationSelection = () => {
   }, [isLogin, pendingDestination, isAuthenticated]);
 
   const onBack = () => {
-    router.push("/discover/interests");
+    router.push("/interestpage");
   };
 
   return (

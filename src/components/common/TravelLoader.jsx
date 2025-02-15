@@ -3,80 +3,74 @@ import {
   Plane,
   Ship,
   Train,
-  Bus,
-  MapPin,
-  Compass,
   Mountain,
   Palmtree,
-  Camera,
-  Sunset,
-  Tent,
-  MapPinned,
+  Navigation,
+  Globe,
+  Luggage,
+  Route,
+  Satellite,
 } from "lucide-react";
 
 const DynamicTravelLoader = () => {
   const [currentScene, setCurrentScene] = useState(0);
-  const [dots, setDots] = useState(".");
+  const [progress, setProgress] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const scenes = [
     {
       icon: Plane,
-      bgColor: "bg-sky-50",
-      iconColor: "text-sky-500",
-      borderColor: "border-sky-200",
-      spinnerColor: "border-sky-400",
-      message: "Preparing for takeoff",
-      description: "Scanning the skies for the best routes",
+      bgGradient: "from-sky-100/90 via-blue-50/95 to-sky-100/90",
+      iconColor: "text-sky-600",
+      themeColor: "sky",
+      message: "Charting Flight Paths",
+      description: "Optimizing air routes with real-time weather data",
+      elements: [...Array(6)].map(() => ({
+        size: Math.floor(Math.random() * 4 + 2),
+        speed: Math.random() * 3 + 1,
+        delay: Math.random() * 5,
+      })),
     },
     {
       icon: Ship,
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-500",
-      borderColor: "border-blue-200",
-      spinnerColor: "border-blue-400",
-      message: "Setting sail",
-      description: "Charting the ocean waves",
+      bgGradient: "from-blue-100/90 via-cyan-50/95 to-blue-100/90",
+      iconColor: "text-blue-600",
+      themeColor: "blue",
+      message: "Navigating Ocean Currents",
+      description: "Analyzing maritime traffic patterns",
+      elements: [...Array(8)].map(() => ({
+        size: Math.floor(Math.random() * 4 + 2),
+        speed: Math.random() * 3 + 1,
+        delay: Math.random() * 5,
+      })),
     },
     {
       icon: Train,
-      bgColor: "bg-emerald-50",
-      iconColor: "text-emerald-500",
-      borderColor: "border-emerald-200",
-      spinnerColor: "border-emerald-400",
-      message: "All aboard",
-      description: "Racing through scenic routes",
+      bgGradient: "from-emerald-100/90 via-green-50/95 to-emerald-100/90",
+      iconColor: "text-emerald-600",
+      themeColor: "emerald",
+      message: "Synchronizing Rail Networks",
+      description: "Connecting high-speed transit hubs",
+      elements: [...Array(10)].map(() => ({
+        size: Math.floor(Math.random() * 4 + 2),
+        speed: Math.random() * 3 + 1,
+        delay: Math.random() * 5,
+      })),
     },
-    {
-      icon: Mountain,
-      bgColor: "bg-purple-50",
-      iconColor: "text-purple-500",
-      borderColor: "border-purple-200",
-      spinnerColor: "border-purple-400",
-      message: "Exploring peaks",
-      description: "Finding the perfect viewpoints",
-    },
-    {
-      icon: Palmtree,
-      bgColor: "bg-yellow-50",
-      iconColor: "text-yellow-600",
-      borderColor: "border-yellow-200",
-      spinnerColor: "border-yellow-400",
-      message: "Beach vibes",
-      description: "Discovering tropical paradises",
-    },
+    // ... other scenes
   ];
 
   useEffect(() => {
-    const dotsInterval = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? "." : prev + "."));
-    }, 500);
+    const progressInterval = setInterval(() => {
+      setProgress((prev) => Math.min(prev + 0.5, 100));
+    }, 50);
 
     const sceneInterval = setInterval(() => {
       setCurrentScene((prev) => (prev + 1) % scenes.length);
-    }, 2000);
+    }, 3500);
 
     return () => {
-      clearInterval(dotsInterval);
+      clearInterval(progressInterval);
       clearInterval(sceneInterval);
     };
   }, []);
@@ -84,68 +78,102 @@ const DynamicTravelLoader = () => {
   const CurrentIcon = scenes[currentScene].icon;
 
   return (
-    <div className="container max-w-[88rem] mx-auto px-4 min-h-screen mt-[73px] md:mt-[9px] flex flex-col items-center justify-center gap-8">
+    <div className="fixed inset-0 bg-gradient-to-br via-white backdrop-blur-lg flex items-center justify-center">
       <div
-        className={`relative w-32 h-32 ${scenes[currentScene].bgColor} rounded-full transition-colors duration-700 ease-in-out`}
+        className={`absolute inset-0 bg-gradient-to-br ${scenes[currentScene].bgGradient} transition-all duration-1000`}
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-full h-full rounded-full blur-xl animate-pulse opacity-50" />
-        </div>
+        <div className="absolute inset-0 opacity-25 mix-blend-overlay animate-texture" />
+      </div>
 
-        <div className="absolute inset-0 animate-spin-slow">
-          <div
-            className={`absolute inset-2 rounded-full border-2 border-dashed ${scenes[currentScene].borderColor} transition-colors duration-700`}
-          />
-        </div>
-        <div className="absolute inset-0 animate-spin-reverse-slow">
-          <div
-            className={`absolute inset-4 rounded-full border-2 border-dashed ${scenes[currentScene].borderColor} transition-colors duration-700`}
-          />
-        </div>
+      {/* Animated Globe Background */}
+      <div className="absolute w-full h-full flex items-center justify-center opacity-10">
+        <Globe className="w-[120vh] h-[120vh] text-gray-300 animate-globe-rotate" />
+      </div>
 
-        <div className="absolute inset-0 flex items-center justify-center animate-bounce-gentle">
-          <CurrentIcon
-            className={`w-12 h-8 ${scenes[currentScene].iconColor} transition-all duration-700 transform hover:scale-110`}
-            strokeWidth={1.5}
-          />
-        </div>
+      <div className="relative z-10 flex flex-col items-center gap-12 px-4">
+        {/* Main Orb */}
+        <div
+          className={`relative w-64 h-64 rounded-full transition-all duration-1000 ${
+            isHovered ? "scale-110" : "scale-100"
+          }`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Interactive Layers */}
+          <div className="absolute inset-0 animate-orb-pulse">
+            <div
+              className={`absolute inset-0 rounded-full bg-${scenes[currentScene].themeColor}-100/30 blur-xl`}
+            />
+          </div>
 
-        <div className="absolute inset-0">
-          {[...Array(6)].map((_, i) => (
+          <div className="absolute inset-0 animate-orb-rotate">
+            <div
+              className={`absolute inset-0 rounded-full border-[6px] border-dashed border-${scenes[currentScene].themeColor}-200/50 bg-clip-padding`}
+            />
+          </div>
+
+          {/* Dynamic Particles */}
+          {scenes[currentScene].elements.map((el, i) => (
             <div
               key={i}
-              className={`absolute w-3 h-3 ${scenes[currentScene].iconColor} transition-colors duration-700`}
+              className={`absolute w-${el.size} h-${el.size} bg-${scenes[currentScene].themeColor}-400/80 rounded-full`}
               style={{
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
-                animation: `float ${2 + i}s ease-in-out ${i * 0.5}s infinite`,
+                animation: `particle-float ${el.speed}s ease-in-out ${el.delay}s infinite`,
               }}
-            >
-              <div
-                className={`w-full h-full rounded-full ${scenes[currentScene].bgColor} animate-ping`}
-              />
-            </div>
+            />
           ))}
+
+          {/* Central Icon */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <CurrentIcon
+              className={`w-24 h-24 ${scenes[currentScene].iconColor} transition-all duration-700 transform hover:scale-125`}
+              strokeWidth={1.25}
+            />
+          </div>
+
+          {/* Halo Effect */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div
+              className={`w-32 h-32 rounded-full bg-${scenes[currentScene].themeColor}-200/20 animate-halo`}
+            />
+          </div>
         </div>
 
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div
-            className={`w-16 h-16 rounded-full border-4 ${scenes[currentScene].spinnerColor} border-t-transparent animate-spin transition-colors duration-700`}
-          />
+        {/* Progress & Text */}
+        <div className="space-y-6 text-center max-w-2xl">
+          <div className="relative h-2 bg-gray-200/50 rounded-full overflow-hidden w-64">
+            <div
+              className={`absolute left-0 h-full bg-${scenes[currentScene].themeColor}-500 transition-all duration-500`}
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h2
+              className={`text-4xl font-bold ${scenes[currentScene].iconColor} animate-text-gradient`}
+            >
+              {scenes[currentScene].message}
+              <span className="animate-pulse">...</span>
+            </h2>
+            <p className="text-lg text-gray-600 font-medium animate-typing">
+              {scenes[currentScene].description}
+            </p>
+          </div>
+
+          {/* Ambient Icons */}
+          <div className="flex justify-center gap-6 opacity-50">
+            <Navigation className="animate-float-1" />
+            <Luggage className="animate-float-2" />
+            <Route className="animate-float-3" />
+            <Satellite className="animate-float-4" />
+          </div>
         </div>
       </div>
 
-      <div className="space-y-3 text-center">
-        <p
-          className={`text-2xl font-medium ${scenes[currentScene].iconColor} transition-colors duration-700`}
-        >
-          {scenes[currentScene].message}
-          {dots}
-        </p>
-        <p className="text-sm text-gray-500 animate-pulse">
-          {scenes[currentScene].description}
-        </p>
-      </div>
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-grid mask-radial-faded" />
     </div>
   );
 };

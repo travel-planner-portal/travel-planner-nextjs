@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,6 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Trash2 } from "lucide-react";
+import FileUploader from "../global/FileUploader";
+import TextEditor from "../global/TextEditor";
 
 export default function CreatePostForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +40,8 @@ export default function CreatePostForm() {
     },
     featured: false,
   });
+
+  console.log(formData);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -128,25 +131,18 @@ export default function CreatePostForm() {
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Subtitle</label>
-            <Textarea
-              name="subtitle"
+            <TextEditor
               value={formData.subtitle}
-              onChange={handleInputChange}
-              placeholder="Enter post subtitle"
-              required
+              onChange={(content) => {
+                setFormData((prev) => ({ ...prev, subtitle: content }));
+              }}
             />
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Featured Image URL</label>
-              <Input
-                name="featuredImage.url"
-                value={formData.featuredImage.url}
-                onChange={handleInputChange}
-                placeholder="Enter image URL"
-                required
-              />
+              <FileUploader onFileSelect={(file)=>{console.log(file)}} />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Featured Image Alt</label>
@@ -276,15 +272,7 @@ export default function CreatePostForm() {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Section Content</label>
-                <Textarea
-                  value={section.content}
-                  onChange={(e) =>
-                    handleSectionChange(index, "content", e.target.value)
-                  }
-                  placeholder="Enter section content"
-                  required
-                  rows={4}
-                />
+                <TextEditor />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
@@ -292,12 +280,10 @@ export default function CreatePostForm() {
                   <label className="text-sm font-medium">
                     Section Image URL
                   </label>
-                  <Input
-                    value={section.image.url}
-                    onChange={(e) =>
+                  <FileUploader
+                    onFileSelect={(e) =>
                       handleSectionChange(index, "image.url", e.target.value)
                     }
-                    placeholder="Enter image URL"
                   />
                 </div>
                 <div className="space-y-2">

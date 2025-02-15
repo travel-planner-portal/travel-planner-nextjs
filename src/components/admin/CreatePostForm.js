@@ -142,7 +142,11 @@ export default function CreatePostForm() {
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Featured Image URL</label>
-              <FileUploader onFileSelect={(file)=>{console.log(file)}} />
+              <FileUploader
+                onFileSelect={(file) => {
+                  console.log(file);
+                }}
+              />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Featured Image Alt</label>

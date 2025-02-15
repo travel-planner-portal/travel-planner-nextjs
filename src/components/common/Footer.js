@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="border-t">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-[88rem]">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
             <MapPin className="h-6 w-6" />

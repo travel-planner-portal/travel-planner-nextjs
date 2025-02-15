@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 export default function Newsletter() {
   return (
     <section className="bg-[#FDFDE5] py-16">
-      <div className="container mx-auto px-4 text-center">
+      <div className="container mx-auto px-4 text-center max-w-[88rem]">
         <p className="text-sm font-medium text-yellow-500 mb-2">NEWSLETTER</p>
         <h2 className="text-3xl font-bold mb-4">
           Join our exclusive travel community

@@ -8,20 +8,12 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background mt-[100px] ">
       {/* Header */}
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center space-x-2">
-            <MapPin className="h-6 w-6" />
-            <span className="font-bold text-xl">FindTrip</span>
-          </Link>
-          <Button variant="ghost">MENU</Button>
-        </div>
-      </header>
+    
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 grid md:grid-cols-2 gap-12 items-center">
+      <section className="container max-w-[88rem] mx-auto px-4 py-12 grid md:grid-cols-2 gap-12 items-center">
         <div>
           <p className="text-sm font-medium text-yellow-500 mb-4">FEATURED</p>
           <h1 className="text-4xl font-bold mb-4">
@@ -32,7 +24,7 @@ export default function Home() {
             of Machu Picchu, and there are quite a few wonderful hikes and other
             things to do in Machu Picchu if you have the time.
           </p>
-          <Button>Read more</Button>
+          <Link href={"/blog/1"}>Read more</Link>
         </div>
         <div className="relative h-[400px]">
           <Image
@@ -45,7 +37,7 @@ export default function Home() {
       </section>
 
       {/* Best Locations */}
-      <section className="container mx-auto px-4 py-12">
+      <section className="container max-w-[88rem] mx-auto px-4 py-12">
         <div className="flex gap-12">
           {/* Left side - Title and navigation */}
           <div className="w-64 flex-shrink-0">
@@ -95,7 +87,7 @@ export default function Home() {
       </section>
 
       {/* Featured Topics */}
-      <section className="container mx-auto px-4 py-12">
+      <section className="container max-w-[88rem] mx-auto px-4 py-12">
         <div className="flex justify-between items-center mb-8">
           <div>
             <p className="text-sm font-medium text-yellow-500 mb-2">
@@ -108,110 +100,7 @@ export default function Home() {
           <Button variant="outline">See More</Button>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              title: "Seasonal Makeup Trends: Fall Edition",
-              date: "Oct 1, 2023",
-              description:
-                "Dive into the enchanting world of fall-inspired makeup trends. From warm hues to bold lip colors, discover the latest beauty trends that will elevate your autumn beauty routine.",
-              author: "Jane Doe",
-              readTime: "5min read",
-              imageSrc:
-                "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-            },
-            {
-              title: "Reviewing the Latest Beauty Products of 2023",
-              date: "Sep 25, 2023",
-              description:
-                "An in-depth look at the newest beauty products, providing honest reviews to help you make informed decisions.",
-              author: "Emily Roe",
-              readTime: "7min read",
-              imageSrc:
-                "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-            },
-            {
-              title: "Reader Spotlight: Transformation Stories",
-              date: "Sep 20, 2023",
-              description:
-                "Discover inspiring stories from our readers who have transformed their beauty routines and lives.",
-              author: "John Smith",
-              readTime: "6min read",
-              imageSrc:
-                "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-            },
-            {
-              title: "Inside IBI: Product Development Journey",
-              date: "Sep 15, 2023",
-              description:
-                "Go behind the scenes to explore the creative journey of product development at IBI.",
-              author: "Sarah Lee",
-              readTime: "8min read",
-              imageSrc:
-                "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-            },
-            {
-              title: "Exclusive Interview with Jenna Smith, Founder & CEO",
-              date: "Sep 10, 2023",
-              description:
-                "Gain insights from Jenna Smith, the visionary behind IBI, in an exclusive one-on-one interview.",
-              author: "Chris Doe",
-              readTime: "9min read",
-              imageSrc:
-                "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-            },
-            {
-              title: "Step-by-Step Guide: Achieving the Perfect Smokey Eye",
-              date: "Sep 5, 2023",
-              description:
-                "Learn how to create a flawless smokey eye with this easy-to-follow guide, complete with tips and tricks.",
-              author: "Anna Grace",
-              readTime: "4min read",
-              imageSrc:
-                "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-            },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="group cursor-pointer overflow-hidden border rounded-lg shadow-md hover:shadow-lg transition-shadow"
-            >
-              <div className="relative h-[200px]">
-                <img
-                  src={item.imageSrc}
-                  alt={item.title}
-                  className="object-cover w-full h-full transition-transform group-hover:scale-105"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600 mb-4">{item.description}</p>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm text-gray-500">
-                      {item.author} · {item.readTime}
-                    </p>
-                  </div>
-                  <div className="text-blue-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-5 h-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+      
       </section>
       <Newsletter />
 

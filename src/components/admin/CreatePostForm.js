@@ -215,10 +215,13 @@ export default function CreatePostForm() {
                     featuredImage: {
                       ...prev.featuredImage,
                       file: file,
-                      url: URL.createObjectURL(file)
+                      url: file ? URL.createObjectURL(file) : ""
                     }
                   }));
                 }}
+                accept="image/*"
+                maxSize={5}
+                required={true}
               />
             </div>
             <div className="space-y-2">
@@ -237,15 +240,16 @@ export default function CreatePostForm() {
             <div className="space-y-2">
               <label className="text-sm font-medium">Category</label>
               <Select
+                className="bg-white"
                 value={formData.category}
                 onValueChange={(value) =>
                   setFormData((prev) => ({ ...prev, category: value }))
                 }
               >
-                <SelectTrigger>
+                <SelectTrigger className="bg-white">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   <SelectItem value="LOCATION">Location</SelectItem>
                   <SelectItem value="FEATURED">Featured</SelectItem>
                   <SelectItem value="INSIGHT">Insight</SelectItem>
@@ -366,10 +370,13 @@ export default function CreatePostForm() {
                     onFileSelect={(file) => {
                       handleSectionChange(index, 'image', {
                         file: file,
-                        url: URL.createObjectURL(file),
+                        url: file ? URL.createObjectURL(file) : "",
                         alt: section.image.alt
                       });
                     }}
+                    accept="image/*"
+                    maxSize={5}
+                    required={true}
                   />
                 </div>
                 <div className="space-y-2">

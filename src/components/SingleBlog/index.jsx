@@ -20,15 +20,17 @@ const SingleBlog = ({ data }) => {
       </div>
 
       {/* Main Image */}
+        {data?.featureImage?.url && (
       <div className="mb-12">
-        <Image
-          src={data?.featureImage?.url || "/default-image.jpg"}
-          alt={data?.alt || "Blog image"}
-          width={1200}
-          height={600}
-          className="w-full rounded-lg"
-        />
+          <Image
+            src={data?.featureImage?.url}
+            alt={data?.alt || "Blog image"}
+            width={1200}
+            height={600}
+            className="w-full rounded-lg"
+            />
       </div>
+        )}
 
       {/* Blog Sections */}
       {data?.sections?.map((item, index) => (

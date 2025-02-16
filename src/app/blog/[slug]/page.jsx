@@ -25,7 +25,7 @@ const fetchBlogs = async (id) => {
 };
 
 const Page = async ({ params }) => {
-  const { slug } = params; // Fixed: No `await` needed here
+  const { slug } = await params; // Fixed: No `await` needed here
 
   const data = await fetchBlogs(slug);
   if (!data) return <p className="text-center text-red-500">Blog not found</p>;

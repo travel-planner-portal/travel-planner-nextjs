@@ -42,6 +42,8 @@ export default function page() {
 
   if (isError) return <div>Error fetching blogs</div>;
 
+  if (!blogs.length) return <div className="flex flex-col items-center justify-center min-h-screen w-full text-[24px] "  >No blogs found We are Updating Soon 😊</div>;
+
   return (
     <main className="min-h-screen bg-background mt-[100px] ">
       {/* Header */}
@@ -60,12 +62,14 @@ export default function page() {
           </Link>
         </div>
         <div className="relative h-[400px]">
-          <Image
-            src={blogs[0]?.featureImage?.url}
-            alt="Mountain landscape"
-            fill
-            className="object-cover rounded-lg"
-          />
+          {blogs[0]?.featureImage?.url && (
+            <Image
+              src={blogs[0]?.featureImage?.url}
+              alt="Mountain landscape"
+              fill
+              className="object-cover rounded-lg"
+            />
+          )}
         </div>
       </section>
 

@@ -8,19 +8,21 @@ const SingleSectionBlog = ({data}) => {
        {data?.title}
       </h2>
       <p className="text-gray-600 mb-8">
-      {data?.title}
+        {data?.content}
       </p>
 
       {/* In-article Image */}
+      {data?.image?.url && (
       <div className="my-12">
         <Image
           src={data?.image?.url}
           alt={data?.alt}
           width={1200}
           height={600}
-          className="w-full rounded-lg"
-        />
-      </div>
+            className="w-full rounded-lg"
+          />
+          </div>
+      )}
     </div>
   );
 };

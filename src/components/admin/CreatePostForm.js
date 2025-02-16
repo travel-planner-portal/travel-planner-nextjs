@@ -13,12 +13,19 @@ import {
 } from "@/components/ui/select";
 import { Plus, Trash2 } from "lucide-react";
 import FileUploader from "../global/FileUploader";
-import TextEditor from "../global/TextEditor";
 
 export default function CreatePostForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [sections, setSections] = useState([
-    { title: "", content: "", image: { url: "", alt: "" } },
+    {
+      title: "",
+      content: "", // Make sure this is initialized
+      image: {
+        url: "",
+        alt: "",
+        file: null
+      }
+    },
   ]);
 
   const [formData, setFormData] = useState({
@@ -74,7 +81,15 @@ export default function CreatePostForm() {
   const addSection = () => {
     setSections([
       ...sections,
-      { title: "", content: "", image: { url: "", alt: "" } },
+      {
+        title: "",
+        content: "",
+        image: {
+          url: "",
+          alt: "",
+          file: null
+        }
+      },
     ]);
   };
 
@@ -87,27 +102,76 @@ export default function CreatePostForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/blog/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          sections,
-        }),
-      });
+      const formDataToSend = new FormData();
 
-      if (!response.ok) {
-        throw new Error("Failed to create post");
+      // Append main fields
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('subtitle', formData.subtitle);
+      formDataToSend.append('category', formData.category);
+      formDataToSend.append('authorName', formData.author.name);
+      formDataToSend.append('readTime', formData.readTime);
+
+      if (formData.category === 'LOCATION') {
+        formDataToSend.append('locationName', formData.location.name);
+        formDataToSend.append('country', formData.location.country);
       }
 
+      // Append feature image and alt
+      if (formData.featuredImage.file) {
+        formDataToSend.append('featureImage', formData.featuredImage.file);
+        formDataToSend.append('alt', formData.featuredImage.alt);
+      }
+
+      // Prepare sections data
+      const sectionsData = sections.map(section => ({
+        title: section.title,
+        content: section.content || '', // Ensure content is not undefined
+        alt: section.image.alt || ''
+      }));
+
+      // Append sections as a JSON string
+      formDataToSend.append('sections', JSON.stringify(sectionsData));
+
+      // Append section images separately
+      sections.forEach((section, index) => {
+        if (section.image.file) {
+          formDataToSend.append('sections', section.image.file);
+        }
+      });
+
+      // Log the FormData contents for debugging
+      for (let pair of formDataToSend.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const response = await fetch('https://travelgo-blog-backend-141065095049.us-central1.run.app/api/v1/blog', {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
       const data = await response.json();
-      console.log("Post created:", data);
-      // Handle success (e.g., redirect or show success message)
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create post');
+      }
+
+      console.log('Post created:', data);
+      // Reset form after successful submission
+      setFormData({
+        title: "",
+        subtitle: "",
+        featuredImage: { url: "", alt: "", file: null },
+        category: "LOCATION",
+        author: { name: "", avatar: "" },
+        readTime: "",
+        location: { name: "", country: "" },
+        featured: false,
+      });
+      setSections([{ title: "", content: "", image: { url: "", alt: "", file: null } }]);
+
     } catch (error) {
-      console.error("Error creating post:", error);
-      // Handle error (show error message)
+      console.error('Error creating post:', error);
+      alert(error.message); // Show error to user
     } finally {
       setIsLoading(false);
     }
@@ -131,11 +195,13 @@ export default function CreatePostForm() {
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Subtitle</label>
-            <TextEditor
+            <Textarea
+              name="subtitle"
               value={formData.subtitle}
-              onChange={(content) => {
-                setFormData((prev) => ({ ...prev, subtitle: content }));
-              }}
+              onChange={handleInputChange}
+              placeholder="Enter post subtitle"
+              className="min-h-[100px]"
+              required
             />
           </div>
 
@@ -144,7 +210,14 @@ export default function CreatePostForm() {
               <label className="text-sm font-medium">Featured Image URL</label>
               <FileUploader
                 onFileSelect={(file) => {
-                  console.log(file);
+                  setFormData(prev => ({
+                    ...prev,
+                    featuredImage: {
+                      ...prev.featuredImage,
+                      file: file,
+                      url: URL.createObjectURL(file)
+                    }
+                  }));
                 }}
               />
             </div>
@@ -186,7 +259,7 @@ export default function CreatePostForm() {
                 name="author.name"
                 value={formData.author.name}
                 onChange={handleInputChange}
-                 required
+                required
               />
             </div>
 
@@ -275,7 +348,13 @@ export default function CreatePostForm() {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Section Content</label>
-                <TextEditor />
+                <Textarea
+                  value={section.content}
+                  onChange={(e) => handleSectionChange(index, "content", e.target.value)}
+                  placeholder="Enter section content"
+                  className="min-h-[200px]"
+                  required
+                />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
@@ -284,9 +363,13 @@ export default function CreatePostForm() {
                     Section Image URL
                   </label>
                   <FileUploader
-                    onFileSelect={(e) =>
-                      handleSectionChange(index, "image.url", e.target.value)
-                    }
+                    onFileSelect={(file) => {
+                      handleSectionChange(index, 'image', {
+                        file: file,
+                        url: URL.createObjectURL(file),
+                        alt: section.image.alt
+                      });
+                    }}
                   />
                 </div>
                 <div className="space-y-2">

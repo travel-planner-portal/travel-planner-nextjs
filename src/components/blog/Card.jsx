@@ -9,10 +9,10 @@ const BlogCard = ({ data }) => {
       <div className="w-full h-[416px] relative rounded-[4px] overflow-hidden ">
         <Image src={data.featureImage.url} layout="fill" alt={data.alt} />
       </div>
-      <div className=" w-full flex flex-row items-center justify-between px-4">
-        <p>{data.title}</p>
-        <Link href={`/blog/${data._id}`}>
-          <HiArrowLongRight className="text-[24px]" />
+      <div className=" w-full flex flex-row items-center justify-between px-4   ">
+        <p className="w-full line-clamp-1">{data.title}</p>
+        <Link href={`/blog/${data._id}`} className="group">
+          <HiArrowLongRight className="text-[24px] group-hover:text-[#C0D122] hover:translate-x-[5px] transition-all duration-300 ease-in-out" />
         </Link>
       </div>
     </div>

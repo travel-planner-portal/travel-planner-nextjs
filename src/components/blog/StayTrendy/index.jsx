@@ -9,11 +9,11 @@ const StayTrendy = ({ data }) => {
           <p className=" text-[#C0D122] text-[14px] leading-[100%] font-rubiksemibold_600">
             Trending Topics
           </p>
-          <p className="text-[48px] leading-[110%] font-rubiksemibold_600 tracking-[-0.48px] max-w-[511px] text-balance">
+          <p className="text-[48px] leading-[110%] font-rubiksemibold_600 tracking-[-0.48px]  text-balance">
             Stay Trendy with Our Latest Insights
           </p>
         </div>
-        <button
+        {/* <button
           className="capitalize 
         py-2
         px-6
@@ -30,7 +30,7 @@ const StayTrendy = ({ data }) => {
         "
         >
           see more
-        </button>
+        </button> */}
       </section>
       <section className="flex flex-row w-full flex-wrap items-start justify-between gap-x-4 gap-y-8">
         {data.map((item, index) => {

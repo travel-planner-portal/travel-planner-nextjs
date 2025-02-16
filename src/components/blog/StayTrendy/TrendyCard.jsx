@@ -15,10 +15,10 @@ const TrendyCard = ({ data }) => {
         />
       </div>
       <div className="p-2 pb-0 flex flex-col items-start justify-start gap-4 w-full ">
-        <p className="max-w-[373px] text-[24px] leading-[110%] font-rubikregular_400 text-[#333]">
+        <p className="max-w-[373px] text-[24px] leading-[110%] font-rubikregular_400 text-[#333] line-clamp-2">
           {data.title}
         </p>
-        <p className="max-w-[373px] text-[#333333]/80 text-base font-rubiklight_300 leading-[140%] tracking-tight ">
+        <p className="max-w-[373px] text-[#333333]/80 text-base font-rubiklight_300 leading-[140%] tracking-tight  line-clamp-4 ">
           {data.subtitle}
         </p>
         <div className="max-w-[373px] border-t border-solid border-[#333333]/50  w-full flex flex-row items-center justify-between py-3">

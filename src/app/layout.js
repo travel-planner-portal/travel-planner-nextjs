@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import "../styles/globals.css";
+import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 
 // Move structured data to a constant

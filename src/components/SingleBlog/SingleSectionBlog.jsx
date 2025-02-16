@@ -4,7 +4,7 @@ import React from "react";
 const SingleSectionBlog = ({data}) => {
   return (
     <div className="prose prose-lg max-w-none">
-      <h2 className="text-2xl font-medium mt-12 mb-4">
+      <h2 className="text-2xl font-rubikmedium_500 mt-12 mb-4">
        {data?.title}
       </h2>
       <p className="text-gray-600 mb-8">

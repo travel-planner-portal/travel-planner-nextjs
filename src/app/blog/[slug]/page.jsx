@@ -1,62 +1,41 @@
-import { Button } from "@/components/ui/button";
-
 import { Footer, Newsletter } from "@/components/common";
+import SingleBlog from "@/components/SingleBlog";
 import axios from "axios";
-import Image from "next/image";
-import SingleSectionBlog from "@/components/SingleBlog/SingleSectionBlog";
 
-const fetchBlogs = async () => {
-  const response = await axios.get(
-    "http://localhost:5000/api/v1/blog/67b045b21983fb79139fa75a",
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+const fetchBlogs = async (id) => {
+  try {
+    const res = await axios.get(
+      `https://travelgo-blog-backend-141065095049.us-central1.run.app/api/v1/blog/${id}`, // Ensure correct endpoint
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!res.data || !res.data.blog) {
+      throw new Error("Invalid response structure");
     }
-  );
 
-  return response.data.blog;
+    return res.data.blog;
+  } catch (error) {
+    console.error("Error fetching blog:", error?.response?.data || error.message);
+    return null; // Avoid breaking the UI
+  }
 };
 
-const Page = async () => {
-  const data = await fetchBlogs();
-  console.log(data);
+const Page = async ({ params }) => {
+  const { slug } = params; // Fixed: No `await` needed here
+
+  const data = await fetchBlogs(slug);
+  if (!data) return <p className="text-center text-red-500">Blog not found</p>;
+
   return (
     <main className="min-h-screen bg-white">
       {/* Blog Post Content */}
-      <article className="max-w-4xl mx-auto px-4">
-        {/* Post Header */}
-        <div className="text-center pt-16 pb-8">
-          <span className="text-yellow-500 text-sm uppercase">
-            {data?.category}
-          </span>
-          <h1 className="text-[48px] font-medium leading-tight mt-4 mb-6">
-            {data?.title}
-          </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            {data?.subtitle}
-          </p>
-        </div>
-
-        {/* Main Image */}
-        <div className="mb-12">
-          <Image
-            src={data?.featureImage?.url}
-            alt={data?.alt}
-            width={1200}
-            height={600}
-            className="w-full rounded-lg"
-          />
-        </div>
-        {data?.sections.map((item, index) => {
-          return <SingleSectionBlog key={index} data={item} />;
-        })}
-      </article>
-
-      {/* Related Posts */}
+      <SingleBlog data={data} />
 
       <Newsletter />
-
       <Footer />
     </main>
   );

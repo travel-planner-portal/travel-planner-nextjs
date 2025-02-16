@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Footer, Newsletter } from "@/components/common";
@@ -8,14 +8,15 @@ import Image from "next/image";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import BestLocation from "@/components/blog/BestLocation";
+import Loading from "./loading";
 
 export default function page() {
-
-
   const [blogs, setBlogs] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const fetchBlogs = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         "https://travelgo-blog-backend-141065095049.us-central1.run.app/api/v1/blog",
@@ -27,8 +28,10 @@ export default function page() {
       );
       console.log(response.data.data); // Use `response.data` instead of logging the full response object
       setBlogs(response.data.data);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching blogs:", error);
+      setIsError(true);
     }
   };
 
@@ -36,23 +39,26 @@ export default function page() {
     fetchBlogs();
   }, []);
 
+  if (isLoading) return <Loading />;
+
+  if (isError) return <div>Error fetching blogs</div>;
 
   return (
     <main className="min-h-screen bg-background mt-[100px] ">
       {/* Header */}
-    
 
       {/* Hero Section */}
       <section className="container max-w-[88rem] mx-auto px-4 py-12 grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <p className="text-sm font-medium text-yellow-500 mb-4">{blogs[0]?.category}</p>
-          <h1 className="text-4xl font-bold mb-4">
-           {blogs[0]?.title}
-          </h1>
-          <p className="text-gray-600 mb-6">
-            {blogs[0]?.subtitle}
+          <p className="text-sm font-medium text-yellow-500 mb-4">
+            {blogs[0]?.category}
           </p>
-          <Link href={"/blog/1"} className="border border-solid border-[#333333] rounded-[4px] mt-[24px] px-6 py-4">Read more</Link>
+          <h1 className="text-4xl font-bold mb-4">{blogs[0]?.title}</h1>
+          <p className="text-gray-600 mb-6">{blogs[0]?.subtitle}</p>
+          <button className="px-6 py-2  border border-solid border-[#333333] rounded-[4px] capitalize mt-6">
+            {" "}
+            read more
+          </button>
         </div>
         <div className="relative h-[400px]">
           <Image
@@ -65,10 +71,10 @@ export default function page() {
       </section>
 
       {/* Best Locations */}
-      <BestLocation data={blogs}/>
+      <BestLocation data={blogs} />
 
       {/* Featured Topics */}
-    
+
       <Newsletter />
 
       <Footer />

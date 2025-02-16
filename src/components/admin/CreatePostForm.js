@@ -186,8 +186,7 @@ export default function CreatePostForm() {
                 name="author.name"
                 value={formData.author.name}
                 onChange={handleInputChange}
-                placeholder="Enter author name"
-                required
+                 required
               />
             </div>
 

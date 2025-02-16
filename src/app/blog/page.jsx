@@ -1,13 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Footer, Newsletter } from "@/components/common";
-import { ArrowLeft, ArrowRight, MapPin } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import BestLocation from "@/components/blog/BestLocation";
+import StayTrendy from "@/components/blog/StayTrendy";
+import { Footer, Newsletter } from "@/components/common";
+import axios from "axios";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import Loading from "./loading";
 
 export default function page() {
@@ -72,6 +70,7 @@ export default function page() {
 
       {/* Best Locations */}
       <BestLocation data={blogs} />
+      <StayTrendy data={blogs} />
 
       {/* Featured Topics */}
 

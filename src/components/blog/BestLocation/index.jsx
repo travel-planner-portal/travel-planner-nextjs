@@ -11,7 +11,12 @@ const BestLocation = ({data}) => {
        flex
       flex-row
       items-end
-      relative mt-[64px]
+      relative py-[80px]
+      border
+      border-solid
+      border-[#333333]/40
+      border-l-0
+      border-r-0
      
       justify-start"
       

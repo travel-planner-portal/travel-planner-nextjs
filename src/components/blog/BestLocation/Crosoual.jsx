@@ -16,15 +16,15 @@ const Crosoual = ({ data }) => {
     console.log(data)
   return (
     <>
-      <div className="absolute top-0 left-0 z-[100] flex flex-row items-center justify-center gap-4">
-        <button className={`custom-prev flex items-center justify-center`}>
-          <HiArrowLongLeft className="text-[24px]" />
+      <div className="absolute top-[80px] left-0 z-[100] flex flex-row items-center justify-center gap-4">
+        <button className={`custom-prev flex items-center justify-center group`}>
+          <HiArrowLongLeft className="text-[24px] group-hover:text-[#C0D122] transition-all duration-300 ease-in-out" />
         </button>
         <button
-          className={`custom-next flex items-center justify-center `}
+          className={`custom-next flex items-center justify-center group `}
           disabled={isEnd}
         >
-          <HiArrowLongRight className="text-[24px]" />
+          <HiArrowLongRight className="text-[24px] group-hover:text-[#C0D122] transition-all duration-300 ease-in-out" />
         </button>
       </div>
       <div className="w-full">

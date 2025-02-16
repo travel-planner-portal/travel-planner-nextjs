@@ -38,4 +38,4 @@ const SingleBlog = ({ data }) => {
   );
 };
 
-export default SingleBlog;
+export default SingleBlog; 

@@ -34,7 +34,7 @@
     "framer-motion": "^11.11.17",
     "html2pdf.js": "^0.10.2",
     "lucide-react": "^0.460.0",
-    "next": "^15.1.6",
+    "next": "^15.1.7",
     "next-seo": "^6.6.0",
     "openai": "^4.72.0",
     "react": "^18.3.1",

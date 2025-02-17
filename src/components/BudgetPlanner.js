@@ -19,6 +19,7 @@ import { useCustomAutocomplete } from "../hooks/useCustomAutocomplete";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { store } from "@/store/store";
+import RoadTripPlanner from "@/app/roadtrip/page";
 
 const BudgetPlanner = ({ inputData, defaultTab }) => {
   const router = useRouter();
@@ -90,9 +91,9 @@ const BudgetPlanner = ({ inputData, defaultTab }) => {
           </p>
         </div>
 
-        <div className="mt-4 sm:mt-6  max-w-xs sm:max-w-md">
-          <div className="bg-[rgba(213,255,73,0.16)]  p-1.5 rounded-[50px] flex gap-2">
-            {["discover", "destination"].map((tab) => (
+        <div className="mt-4 sm:mt-6 w-full max-w-xs sm:max-w-md">
+          <div className="bg-[rgba(213,255,73,0.16)] p-1.5 rounded-[50px] flex flex-wrap gap-1 sm:gap-2 justify-center">
+            {["discover", "destination", "roadtrip"].map((tab) => (
               <motion.button
                 key={tab}
                 onClick={() => {
@@ -101,12 +102,10 @@ const BudgetPlanner = ({ inputData, defaultTab }) => {
                   url.searchParams.set("tab", tab);
                   window.history.pushState({}, "", url);
                 }}
-                className={`relative flex px-[20px] py-[4px] rounded-[40px] text-[14px] font-rubikmedium_500 capitalize transition-colors
-                ${
-                  activeTab === tab
-                    ? "text-white"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
+                className={`relative flex px-4 sm:px-5 py-2 sm:py-3 rounded-[40px] text-sm sm:text-[14px] font-rubikmedium_500 capitalize transition-colors
+        ${
+          activeTab === tab ? "text-white" : "text-gray-500 hover:text-gray-700"
+        }`}
                 whileHover={activeTab !== tab ? { scale: 1.02 } : {}}
                 whileTap={{ scale: 0.98 }}
               >
@@ -117,7 +116,9 @@ const BudgetPlanner = ({ inputData, defaultTab }) => {
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-                <span className="relative z-0">{tab}</span>
+                <span className="relative z-0">
+                  {tab === "roadtrip" ? "Road Trip" : tab}
+                </span>
               </motion.button>
             ))}
           </div>
@@ -134,8 +135,10 @@ const BudgetPlanner = ({ inputData, defaultTab }) => {
           >
             {activeTab === "discover" ? (
               <Discover inputData={inputData} />
-            ) : (
+            ) : activeTab === "destination" ? (
               <Destination inputData={inputData} />
+            ) : (
+              <RoadTripPlanner inputData={inputData} />
             )}
           </motion.div>
         </AnimatePresence>
@@ -312,6 +315,7 @@ const Discover = ({ inputData }) => {
                 What's your travel budget?
               </span>
             </div>
+
             <div className="flex flex-col gap-2 pl-4 sm:pl-10">
               <div className="flex items-center justify-start gap-3 sm:gap-5">
                 <input

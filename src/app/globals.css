@@ -81,8 +81,8 @@ html {
   overflow-x: hidden !important;
 }
 .background-image-homepage {
-  background-image: url("/images/home_mage_desk_bg.png");
-  height: 100vh;
+  background-image: url("../assets/images/home_mage_desk_bg.png");
+  height: 110vh;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -349,8 +349,7 @@ html {
 
 @font-face {
   font-family: Rubik-Bold;
-  src: local("Rubik-Bold"),
-    url("/font/Rubik/Rubik-Bold.ttf") format("truetype");
+  src: local("Rubik-Bold"), url("/font/Rubik/Rubik-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: Rubik-BoldItalic;

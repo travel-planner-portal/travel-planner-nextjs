@@ -6,10 +6,9 @@ import { Footer, Newsletter } from "@/components/common";
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Loading from "./loading";
-import Link from "next/link";
+import Link from "next/link"; 
 
-export default function page() {
+export default function Page() {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -27,10 +26,11 @@ export default function page() {
       );
       console.log(response.data.data); // Use `response.data` instead of logging the full response object
       setBlogs(response.data.data);
-      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching blogs:", error);
       setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -38,18 +38,30 @@ export default function page() {
     fetchBlogs();
   }, []);
 
-  if (isLoading) return <Loading />;
+  if (isError) return (
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <p className="text-2xl text-red-500">Error fetching blogs</p>
+      <button
+        onClick={fetchBlogs}
+        className="mt-4 px-6 py-2 border border-solid border-[#333333] rounded-[4px] hover:bg-gray-100"
+      >
+        Try Again
+      </button>
+    </div>
+  );
 
-  if (isError) return <div>Error fetching blogs</div>;
-
-  if (!blogs.length) return <div className="flex flex-col items-center justify-center min-h-screen w-full text-[24px] "  >No blogs found We are Updating Soon 😊</div>;
+  if (!blogs.length && !isLoading) return (
+    <div className="flex flex-col items-center justify-center min-h-screen w-full text-[24px]">
+      No blogs found We are Updating Soon 😊
+    </div>
+  );
 
   return (
     <main className="min-h-screen bg-background mt-[100px] ">
       {/* Header */}
 
       {/* Hero Section */}
-      <section className="container max-w-[88rem] mx-auto px-4 py-12 grid md:grid-cols-2 gap-12 items-center">
+      {/* <section className="container max-w-[88rem] mx-auto px-4 py-12 grid md:grid-cols-2 gap-12 items-center">
         <div>
           <p className="text-sm font-medium text-yellow-500 mb-4">
             {blogs[0]?.category}
@@ -71,11 +83,11 @@ export default function page() {
             />
           )}
         </div>
-      </section>
+      </section> */}
 
       {/* Best Locations */}
-      <BestLocation data={blogs} />
-      <StayTrendy data={blogs} />
+      {/* <BestLocation data={blogs} /> */}
+      <StayTrendy data={blogs} isLoading={isLoading} />
 
       {/* Featured Topics */}
 

@@ -1,15 +1,16 @@
 import React from "react";
 import TrendyCard from "./TrendyCard";
+import TrendyCardSkeleton from "./TrendyCardSkeleton";
 
-const StayTrendy = ({ data }) => {
+const StayTrendy = ({ data, isLoading }) => {
   return (
-    <section className="container max-w-[88rem] mx-auto flex flex-col items-start justify-start gap-[40px]  py-[80px]">
-      <section className="flex flex-row items-end w-full justify-between gap-2  ">
-        <div className=" flex flex-col items-start justify-start gap-2">
-          <p className=" text-[#C0D122] text-[14px] leading-[100%] font-rubiksemibold_600">
+    <section className="container max-w-[88rem] mx-auto flex flex-col items-start justify-start gap-[40px] py-[40px] md:py-[60px] lg:py-[80px] px-4 md:px-6 lg:px-8">
+      <section className="flex flex-col md:flex-row items-start md:items-end w-full justify-between gap-4 md:gap-2">
+        <div className="flex flex-col items-start justify-start gap-2">
+          <p className="text-[#C0D122] text-[14px] leading-[100%] font-rubiksemibold_600">
             Trending Topics
           </p>
-          <p className="text-[48px] leading-[110%] font-rubiksemibold_600 tracking-[-0.48px]  text-balance">
+          <p className="text-[32px] md:text-[40px] lg:text-[48px] leading-[110%] font-rubiksemibold_600 tracking-[-0.48px] max-w-[510px] text-balance">
             Stay Trendy with Our Latest Insights
           </p>
         </div>
@@ -32,10 +33,18 @@ const StayTrendy = ({ data }) => {
           see more
         </button> */}
       </section>
-      <section className="flex flex-row w-full flex-wrap items-start justify-between gap-x-4 gap-y-8">
-        {data.map((item, index) => {
-          return <TrendyCard data={item} key={index} />;
-        })}
+
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full items-start justify-start gap-4 md:gap-6 lg:gap-8">
+        {isLoading ? (
+          // Show 6 skeleton cards while loading
+          [...Array(6)].map((_, index) => (
+            <TrendyCardSkeleton key={index} />
+          ))
+        ) : (
+          data.map((item, index) => (
+            <TrendyCard data={item} key={index} />
+          ))
+        )}
       </section>
     </section>
   );

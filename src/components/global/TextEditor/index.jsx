@@ -21,4 +21,4 @@ const TextEditor = ({
   );
 };
 
-export default TextEditor;
+export default TextEditor; 
